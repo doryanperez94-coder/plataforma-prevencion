@@ -283,5 +283,53 @@
     </div>
 
     <script src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDxi_V5Ns4cEMUSwxS8gHYLkLr-iW1taAs",
+            authDomain: "rosario-castellano-prevencion.firebaseapp.com",
+            databaseURL: "https://rosario-castellano-prevencion-default-rtdb.firebaseio.com",
+            projectId: "rosario-castellano-prevencion",
+            storageBucket: "rosario-castellano-prevencion.firebasestorage.app",
+            messagingSenderId: "614635518857",
+            appId: "1:614635518857:web:3cf37bed3c1d70fec47f58",
+            measurementId: "G-TK5YJW3R4L"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const reportForm = document.getElementById('reportForm') || document.querySelector('form');
+
+        if (reportForm) {
+            reportForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const folio = 'PEC-' + Math.floor(1000 + Math.random() * 9000);
+                const ahora = new Date();
+                
+                const nuevoReporte = {
+                    folio: folio,
+                    lugar: document.getElementById('lugar')?.value || 'No especificado',
+                    momento: ahora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                    dia: ahora.toISOString().split('T')[0],
+                    emisor: document.getElementById('nombre') ? document.getElementById('nombre').value : 'Anónimo',
+                    tipo: document.getElementById('tipoRiesgo')?.value || document.getElementById('tipo')?.value || 'General',
+                    timestamp: Date.now()
+                };
+
+                push(ref(database, 'pec_reportes'), nuevoReporte)
+                    .then(() => {
+                        alert(`Reporte guardado exitosamente. Folio: ${folio}`);
+                        reportForm.reset();
+                    })
+                    .catch((err) => {
+                        alert('Error al enviar el reporte: ' + err.message);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
