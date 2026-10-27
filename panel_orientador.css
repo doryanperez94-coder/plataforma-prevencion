@@ -1,64 +1,138 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', sans-serif;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Orientación - Consulta de Reportes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="panel_orientador.css">
+</head>
+<body>
+    <header class="panel-header">
+        <h1>Módulo de Consulta para Orientadores</h1>
+        <a href="index.html" class="btn-logout">Cerrar Sesión</a>
+    </header>
 
-body {
-    background-color: #120703;
-    color: #ffffff;
-}
+    <div class="panel-container">
+        <section class="panel-section active">
+            <h2>Visualización de Reportes de Riesgo</h2>
+            <div class="chart-container">
+                <canvas id="graficaReportesOri"></canvas>
+            </div>
+            <table class="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Lugar</th>
+                        <th>Momento / Hora</th>
+                        <th>Día</th>
+                        <th>Emisor</th>
+                        <th>Tipo de Riesgo</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReportesOriBody">
+                </tbody>
+            </table>
+        </section>
+    </div>
 
-.panel-header {
-    background: #3a080c;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #e0561b;
-}
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-.btn-logout {
-    background: #c81e1e;
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 700;
-}
+        const firebaseConfig = {
+            apiKey: "AIzaSyDxi_V5Ns4cEMUSwxS8gHYLkLr-iW1taAs",
+            authDomain: "rosario-castellano-prevencion.firebaseapp.com",
+            databaseURL: "https://rosario-castellano-prevencion-default-rtdb.firebaseio.com",
+            projectId: "rosario-castellano-prevencion",
+            storageBucket: "rosario-castellano-prevencion.firebasestorage.app",
+            messagingSenderId: "614635518857",
+            appId: "1:614635518857:web:3cf37bed3c1d70fec47f58",
+            measurementId: "G-TK5YJW3R4L"
+        };
 
-.panel-container {
-    padding: 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-}
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-.panel-section {
-    background: #1a0305;
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid #3a080c;
-}
+        let miGrafica = null;
 
-.chart-container {
-    max-width: 600px;
-    margin: 1.5rem auto;
-}
+        onValue(ref(database, 'pec_reportes'), (snapshot) => {
+            const data = snapshot.val();
+            const reportes = data ? Object.values(data) : [];
 
-.tabla-datos {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5rem;
-}
+            actualizarTabla(reportes);
+            actualizarGrafica(reportes);
+        });
 
-.tabla-datos th, .tabla-datos td {
-    border: 1px solid #3a080c;
-    padding: 0.8rem;
-    text-align: left;
-}
+        function actualizarTabla(reportes) {
+            const tbody = document.getElementById('tablaReportesOriBody');
+            if (!tbody) return;
 
-.tabla-datos th {
-    background: #3a080c;
-    color: #f97316;
-}
+            tbody.innerHTML = '';
+            if (reportes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #a83b0c; padding: 15px;">No hay reportes registrados.</td></tr>`;
+                return;
+            }
+
+            reportes.slice().reverse().forEach(r => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${r.folio || ''}</td>
+                        <td>${r.lugar || ''}</td>
+                        <td>${r.momento || ''}</td>
+                        <td>${r.dia || ''}</td>
+                        <td>${r.emisor || ''}</td>
+                        <td>${r.tipo || ''}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function actualizarGrafica(reportes) {
+            const canvas = document.getElementById('graficaReportesOri');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            const ctx = canvas.getContext('2d');
+            const conteo = {
+                'Caídas': 0,
+                'Eléctrico': 0,
+                'Mobiliario': 0,
+                'Señalización': 0
+            };
+
+            reportes.forEach(r => {
+                if (conteo[r.tipo] !== undefined) {
+                    conteo[r.tipo]++;
+                }
+            });
+
+            if (miGrafica) {
+                miGrafica.destroy();
+            }
+
+            miGrafica = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Caídas', 'Eléctrico', 'Mobiliario', 'Señalización'],
+                    datasets: [{
+                        label: 'Reportes por Categoría',
+                        data: [conteo['Caídas'], conteo['Eléctrico'], conteo['Mobiliario'], conteo['Señalización']],
+                        backgroundColor: ['#E0561B', '#C81E1E', '#F97316', '#8B0000']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { labels: { color: '#ffffff' } }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#ffffff' } },
+                        y: { ticks: { color: '#ffffff' }, beginAtZero: true }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
