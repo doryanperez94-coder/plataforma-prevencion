@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Reportes Comunitarios - PEC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --vino-principal: #3a080c;
+            --vino-card: #520c12;
+            --naranja-resaltado: #f25c05;
+            --naranja-suave: #ffb703;
+            --blanco-texto: #ffffff;
+            --crema-caja: #fffdf8;
+            --borde-suave: #e5ccb3;
+            --texto-oscuro: #2a080c;
+            --texto-mutado: #7a5c53;
+            --font-titulo: 'Caveat', cursive;
+            --font-cuerpo: 'Nunito', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-cuerpo);
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2a080c 0%, #4a0d0d 50%, #1a0305 100%);
+            color: var(--blanco-texto);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-top {
+            background: var(--vino-principal);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--naranja-resaltado);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .header-brand i {
+            color: var(--naranja-suave);
+            font-size: 1.5rem;
+        }
+
+        .btn-volver {
+            background: transparent;
+            border: 1.5px solid var(--naranja-resaltado);
+            color: var(--blanco-texto);
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-volver:hover {
+            background: var(--naranja-resaltado);
+        }
+
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .report-card {
+            background: var(--crema-caja);
+            color: var(--texto-oscuro);
+            width: 100%;
+            max-width: 680px;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            border: 3px solid var(--naranja-resaltado);
+        }
+
+        .banner-perfil {
+            background: var(--vino-card);
+            color: var(--blanco-texto);
+            padding: 0.8rem 1.2rem;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .banner-perfil span {
+            font-size: 0.8rem;
+            color: #e0b0b4;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .banner-perfil h3 {
+            color: var(--naranja-suave);
+            font-size: 1.1rem;
+        }
+
+        .titulo-form {
+            font-family: var(--font-titulo);
+            font-size: 3.2rem;
+            color: var(--texto-oscuro);
+            text-align: center;
+            line-height: 1;
+        }
+
+        .subtitulo-form {
+            text-align: center;
+            color: var(--texto-mutado);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 0.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .full-row {
+            grid-column: span 2;
+        }
+
+        .campo-group label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+            color: var(--texto-oscuro);
+        }
+
+        .input-estilo, .select-estilo, .textarea-estilo {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            border: 1.5px solid var(--borde-suave);
+            border-radius: 12px;
+            font-family: var(--font-cuerpo);
+            font-size: 0.9rem;
+            outline: none;
+            background: #ffffff;
+            color: var(--texto-oscuro);
+        }
+
+        .input-estilo:focus, .select-estilo:focus, .textarea-estilo:focus {
+            border-color: var(--naranja-resaltado);
+            box-shadow: 0 0 0 3px rgba(242, 92, 5, 0.15);
+        }
+
+        .textarea-estilo {
+            resize: none;
+            height: 85px;
+        }
+
+        .caja-archivo {
+            border: 2px dashed var(--naranja-resaltado);
+            background: #fff8f0;
+            border-radius: 12px;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--texto-oscuro);
+        }
+
+        .caja-archivo i {
+            color: var(--naranja-resaltado);
+            font-size: 1.2rem;
+            margin-right: 0.4rem;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.88rem;
+        }
+
+        .btn-enviar {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, var(--naranja-resaltado) 0%, #d61c1c 100%);
+            color: var(--blanco-texto);
+            font-family: var(--font-cuerpo);
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            box-shadow: 0 8px 15px rgba(214, 28, 28, 0.3);
+            margin-top: 1rem;
+        }
+
+        .btn-enviar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(214, 28, 28, 0.4);
+        }
+
+        .confirmacion-exito {
+            display: none;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .confirmacion-exito i {
+            font-size: 4rem;
+            color: var(--naranja-resaltado);
+            margin-bottom: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .full-row {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-top">
+        <div class="header-brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Plataforma PEC | Entornos Seguros</span>
+        </div>
+        <a href="index.html" class="btn-volver">
+            <i class="fa-solid fa-house"></i> Inicio
+        </a>
+    </header>
+
+    <main class="main-wrapper">
+        <div class="report-card">
+            
+            <div id="vistaFormulario">
+                <div class="banner-perfil">
+                    <div>
+                        <span>Módulo de Prevención</span>
+                        <h3 id="txtRol">Cargando perfil...</h3>
+                    </div>
+                    <i class="fa-solid fa-shield-halved" style="font-size: 1.8rem; color: var(--naranja-suave);"></i>
+                </div>
+
+                <h1 class="titulo-form">Crear Reporte</h1>
+                <p class="subtitulo-form">Registra cualquier zona de riesgo observada en la secundaria.</p>
+
+                <form id="formularioReporte">
+                    <div class="form-grid">
+                        
+                        <div class="campo-group">
+                            <label>Nombre del reportador</label>
+                            <input type="text" id="campoNombre" class="input-estilo" placeholder="Tu nombre" required>
+                        </div>
+
+                        <div class="campo-group">
+                            <label>Grado / Grupo </label>
+                            <input type="text" id="campoGradoRol" class="input-estilo" placeholder=" " required>
+                        </div>
+
+                        <div class="campo-group">
+                            <label>Zona del Riesgo</label>
+                            <select id="campoZona" class="select-estilo" required>
+                                <option value="">Selecciona área...</option>
+                                <option value="Escaleras Principales">Escaleras Principales</option>
+                                <option value="Laboratorio de Ciencias">Laboratorio de Ciencias</option>
+                                <option value="Pasillos Edificio A">Pasillos Edificio A</option>
+                                <option value="Canchas Deportivas">Canchas Deportivas</option>
+                                <option value="Zona de Talleres">Zona de Talleres</option>
+                                <option value="Patio Central">Patio Central</option>
+                            </select>
+                        </div>
+
+                        <div class="campo-group">
+                            <label>Tipo de Riesgo</label>
+                            <select id="campoTipo" class="select-estilo" required>
+                                <option value="">Selecciona tipo...</option>
+                                <option value="Caídas">Tropiezos o Caídas</option>
+                                <option value="Eléctrico">Riesgo Eléctrico</option>
+                                <option value="Mobiliario">Mobiliario Dañado</option>
+                                <option value="Señalización">Falta de Señalización</option>
+                            </select>
+                        </div>
+
+                        <div class="campo-group full-row">
+                            <label>Descripción del Hallazgo</label>
+                            <textarea id="campoDescripcion" class="textarea-estilo" placeholder="Detalla brevemente lo que observaste..." required></textarea>
+                        </div>
+
+                        <div class="campo-group full-row">
+                            <div class="caja-archivo" onclick="document.getElementById('inputFoto').click()">
+                                <i class="fa-solid fa-camera"></i>
+                                <span id="txtArchivo">Adjuntar evidencia fotográfica (Opcional)</span>
+                                <input type="file" id="inputFoto" accept="image/*" style="display: none;" onchange="actualizarNombreArchivo(this)">
+                            </div>
+                        </div>
+
+                        <div class="campo-group full-row">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="checkAnonimo" onchange="marcarAnonimo(this)">
+                                Enviar de forma anónima
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="btn-enviar">
+                        <span>Enviar Reporte</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div id="vistaExito" class="confirmacion-exito">
+                <i class="fa-solid fa-circle-check"></i>
+                <h2 style="font-family: var(--font-titulo); font-size: 3.2rem; color: var(--texto-oscuro);">¡Reporte Enviado!</h2>
+                <p style="color: var(--texto-mutado); font-size: 0.95rem; font-weight: 600; margin: 0.5rem 0 1.5rem;">
+                    Tu registro se ha canalizado exitosamente al comité de seguridad del PEC.
+                </p>
+                <div style="background: #fdecdb; padding: 0.8rem 1.5rem; border-radius: 14px; display: inline-block; margin-bottom: 1.5rem;">
+                    <strong>Folio:</strong> <span id="numFolio" style="color: var(--vino-card); font-weight: 800;">#PEC-0000</span>
+                </div>
+                <br>
+                <a href="index.html" class="btn-enviar" style="text-decoration: none;">
+                    <span>Volver al Inicio</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rolGuardado = localStorage.getItem('userRole') || 'estudiante';
+            const txtRol = document.getElementById('txtRol');
+            
+            if (rolGuardado === 'padre') {
+                txtRol.textContent = 'Acceso: Padre de Familia';
+            } else {
+                txtRol.textContent = 'Acceso: Estudiante';
+            }
+
+            const form = document.getElementById('formularioReporte');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const numFolio = 'PEC-' + Math.floor(1000 + Math.random() * 9000);
+                const hoy = new Date();
+                const fechaFormateada = hoy.toISOString().split('T')[0];
+                const horaFormateada = hoy.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                const nuevoReporte = {
+                    folio: numFolio,
+                    lugar: document.getElementById('campoZona').value,
+                    momento: horaFormateada,
+                    dia: fechaFormateada,
+                    emisor: document.getElementById('campoNombre').value + ' (' + document.getElementById('campoGradoRol').value + ')',
+                    tipo: document.getElementById('campoTipo').value,
+                    descripcion: document.getElementById('campoDescripcion').value,
+                    estado: 'Pendiente'
+                };
+
+                let reportesGuardados = JSON.parse(localStorage.getItem('pec_reportes')) || [];
+                reportesGuardados.push(nuevoReporte);
+                localStorage.setItem('pec_reportes', JSON.stringify(reportesGuardados));
+
+                document.getElementById('numFolio').textContent = '#' + numFolio;
+                document.getElementById('vistaFormulario').style.display = 'none';
+                document.getElementById('vistaExito').style.display = 'block';
+            });
+        });
+
+        function actualizarNombreArchivo(input) {
+            const txt = document.getElementById('txtArchivo');
+            if (input.files && input.files[0]) {
+                txt.textContent = "Foto: " + input.files[0].name;
+            }
+        }
+
+        function marcarAnonimo(checkbox) {
+            const campoNombre = document.getElementById('campoNombre');
+            if (checkbox.checked) {
+                campoNombre.value = 'Anónimo';
+                campoNombre.disabled = true;
+            } else {
+                campoNombre.value = '';
+                campoNombre.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

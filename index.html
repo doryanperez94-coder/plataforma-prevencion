@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEC - Plataforma de Prevención</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <section id="portada" class="hero-cover">
+        <div class="hero-content">
+            <span class="badge-hero">PEC &bull; Proyecto Escolar Comunitario</span>
+            <h1>Plataforma de Prevención</h1>
+            <p class="hero-sub">Escuela "Rosario Castellanos Figueroa" &bull; Tultitlán.</p>
+            <button class="btn-3d btn-hero" onclick="entrarAlSitio()">
+                Entrar a la Pagina &rarr;
+            </button>
+        </div>
+    </section>
+
+    <div id="sitio-principal" class="sitio-oculto">
+        
+        <header>
+            <div class="header-content">
+                <div class="brand">
+                    <h1>Plataforma de Prevención</h1>
+                    <p>Plataforma Preventiva &bull; Secundaria Rosario Castellanos, Tultitlán</p>
+                </div>
+            </div>
+            <div class="header-right-zone">
+                <a href="estudiante_padre.html" class="btn-3d btn-juegos-header" style="text-decoration: none; background: linear-gradient(135deg, var(--naranja-alerta), var(--rojo-primario));">
+                     Realizar Reporte
+               </a>
+                <button class="btn-3d btn-juegos-header" onclick="switchSection('sec-juegos-menu', this)">
+                     Juegos Preventivos
+                </button>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <img src="cecytem.png" alt="Logo Institucional" class="logo-header">
+                    <button class="btn-secret-trigger" onclick="abrirModalSecreto()">👤</button>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <button class="btn-3d nav-tab active" onclick="switchSection('sec-inicio', this)">
+                Inicio y Propósito
+            </button>
+            <button class="nav-tab btn-3d" onclick="switchSection('sec-diagnostico', this)">
+                Diagnóstico Escolar
+            </button>
+            <button class="nav-tab btn-3d" onclick="switchSection('sec-prevencion', this)">
+                Medidas y Protocolos
+            </button>
+            <button class="nav-tab btn-3d" onclick="switchSection('sec-comunidad', this)">
+                Participación Comunitaria
+            </button>
+            <button class="nav-tab btn-3d" onclick="switchSection('sec-evaluacion', this)">
+                Evaluación del Proyecto
+            </button>
+        </nav>
+
+        <div class="container">
+
+            <div id="sec-inicio" class="section-view active">
+                <div class="card-3d">
+                    <div class="card-title">Propósito General del Proyecto</div>
+                    <p class="texto-principal">
+                        Fortalecer la cultura de prevención y seguridad en la comunidad escolar de educación básica a través de la sensibilización e información sobre riesgos físicos presentes en su entorno escolar y las medidas básicas para su prevención, involucrando activamente a estudiantes, docentes y padres de familia de la Secundaria Rosario Castellanos en el municipio de Tultitlán.
+                    </p>
+                </div>
+
+                <div class="grid-3col">
+                    <div class="flip-card" ondblclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="card-front info-card">
+                                <h3>Población Estudiantil</h3>
+                                <p>Desarrollar capacidades de autocuidado, reconocimiento inmediato de áreas vulnerables y adopción de conductas seguras durante las jornadas escolares y períodos de descanso.</p>
+                                <span style="color: var(--naranja-alerta); font-weight: bold;">DOBLE CLICK PARA VER FOTO.</span>
+                            </div>
+                            <div class="card-back">
+                                <img src="poblacion estudiantil.png" alt="Población Estudiantil">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card" ondblclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="card-front info-card">
+                                <h3>Cuerpo Docente</h3>
+                                <p>Coordinar protocolos de prevención y respuesta, mantener supervisión continua en sectores críticos y fomentar un entorno de aprendizaje protegido.</p>
+                                <span style="color: var(--naranja-alerta); font-weight: bold;">DOBLE CLICK PARA VER FOTO.</span>
+                            </div>
+                            <div class="card-back">
+                                <img src="cuerpo docente.png" alt="Cuerpo Docente">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flip-card" ondblclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="card-front info-card">
+                                <h3>Padres de Familia</h3>
+                                <p>Participar en comités de inspección escolar, jornadas de concienciación y colaborar en las gestiones de mantenimiento de la infraestructura.</p>
+                                <span style="color: var(--naranja-alerta); font-weight: bold;">DOBLE CLICK PARA VER FOTO.</span>
+                            </div>
+                            <div class="card-back">
+                                <img src="padres de familia.png" alt="Padres de Familia">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-3d" style="margin-top: 2rem;">
+                    <div class="card-title">Justificación y Diagnóstico del Entorno</div>
+                    <p class="texto-principal">
+                        La seguridad en los espacios educativos es fundamental para el desarrollo pleno de los estudiantes. La detección temprana de factores de riesgo —como peldaños antideslizantes desgastados, cableados expuestos o zonas deportivas deterioradas— permite implementar soluciones oportunas antes de que ocurra un accidente, garantizando que la Secundaria Rosario Castellanos sea un espacio confiable y enfocado en el aprendizaje.
+                    </p>
+                </div>
+            </div>
+
+            <div id="sec-diagnostico" class="section-view">
+                <div class="card-3d">
+                    <div class="card-title">Diagnóstico Integral de Riesgos Físicos</div>
+                    <p class="subtexto">Selecciona cualquier sector del mapa para analizar el nivel de vulnerabilidad, hallazgos y las acciones de mitigación correspondientes.</p>
+                    
+                    <div class="map-grid">
+                        <button class="btn-3d zone-btn" onclick="verDiagnostico('Escaleras Principales', 'Alto', 'Laminado antideslizante desgastado en los tramos B y C. Riesgo inminente de caídas durante la hora de entrada y salida.', 'Instalación de cintas antiderrapantes de uso rudo y señalización reflectante de sentido de tránsito.')">
+                            Escaleras Principales
+                        </button>
+                        <button class="btn-3d zone-btn" onclick="verDiagnostico('Laboratorio de Ciencias', 'Medio', 'Contactos eléctricos a baja altura cercanos a tomas de agua e instrumental sin sujeción adecuada.', 'Reubicación de conexiones eléctricas, colocación de protectores herméticos y fijación de repisas.')">
+                            Laboratorio de Ciencias
+                        </button>
+                        <button class="btn-3d zone-btn" onclick="verDiagnostico('Pasillos Edificio A', 'Bajo', 'Obstáculos temporales como mochilas o mobiliario fuera de lugar durante los recesos.', 'Delimitación de áreas específicas para guardado de mochilas y guardias grupales de supervisión.')">
+                            Pasillos Edificio A
+                        </button>
+                        <button class="btn-3d zone-btn" onclick="verDiagnostico('Canchas Deportivas', 'Medio', 'Grietas en firme de concreto y falta de protección acojinada en los postes de la techumbre.', 'Resanado de superficies con mezcla de alta resistencia y colocación de recubrimientos de espuma en soportes.')">
+                            Canchas Deportivas
+                        </button>
+                        <button class="btn-3d zone-btn" onclick="verDiagnostico('Zona de Talleres', 'Alto', 'Falta de delimitación visual en el piso para el uso de herramientas y maquinaria ligera.', 'Pintado de líneas amarillas de advertencia y guardado de equipo en gabinetes con candado.')">
+                            Zona de Talleres
+                        </button>
+                        <button class="btn-3d zone-btn" onclick="verDiagnostico('Patio Central y Salidas', 'Bajo', 'Desnivel leve en la junta de dilatación del concreto cerca del acceso principal.', 'Nivelación del piso con material epóxico y colocación de pintura de precaución.')">
+                            Patio Central y Salidas
+                        </button>
+                    </div>
+
+                    <div id="diagnosticoBox" class="diag-box">
+                        Selecciona un sector del panel superior para cargar el informe técnico de riesgos.
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-prevencion" class="section-view">
+                <div class="card-3d">
+                    <div class="card-title">Directrices y Protocolos de Prevención</div>
+                    
+                    <div class="grid-2col">
+                        <div class="flip-card" ondblclick="this.classList.toggle('flipped')">
+                            <div class="flip-card-inner">
+                                <div class="card-front guia-box">
+                                    <h3>Prevención de Tropiezos y Caídas</h3>
+                                    <ul>
+                                        <li>Desplazamiento ordenado y a velocidad moderada en pasillos, rampas y escaleras.</li>
+                                        <li>Uso constante del pasamanos al subir o bajar de nivel.</li>
+                                        <li>Conservar las rutas de evacuación libres de mochilas o cajas.</li>
+                                        <span style="color: var(--naranja-alerta); font-weight: bold;">DOBLE CLICK PARA VER FOTO.</span>
+                                    </ul>
+                                </div>
+                                <div class="card-back">
+                                    <img src="prevencion caidas.png" alt="Prevención de Caídas">
+                                    <img src="prevencion caida2.png" alt="Prevención de Caídas">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flip-card" ondblclick="this.classList.toggle('flipped')">
+                            <div class="flip-card-inner">
+                                <div class="card-front guia-box">
+                                    <h3>Seguridad Eléctrica e Instalaciones</h3>
+                                    <ul>
+                                        <li>Prohibición estricta de manipular contactos, cables o interruptores dañados.</li>
+                                        <li>Uso obligatorio de indumentaria de protección en prácticas de laboratorio y talleres.</li>
+                                        <span style="color: var(--naranja-alerta); font-weight: bold;">DOBLE CLICK PARA VER FOTO.</span>
+                                    </ul>
+                                </div>
+                                <div class="card-back">
+                                    <img src="prevencion elecricidad.png" alt="Seguridad Eléctrica">
+                                    <img src="prevencion elecricidad2.png" alt="Seguridad Eléctrica">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-comunidad" class="section-view">
+                <div class="card-3d">
+                    <div class="card-title">Plan de Acción y Participación Comunitaria</div>
+                    
+                    <div class="grid-3col">
+                        <div class="card-3d compromiso-card">
+                            <h4>Estudiantes</h4>
+                            <p>Cuidar las instalaciones escolares, acatar el reglamento interno y participar de forma activa en talleres y simulacros de protección civil.</p>
+                        </div>
+                        <div class="card-3d compromiso-card">
+                            <h4>Docentes y Directivos</h4>
+                            <p>Realizar recorridos diarios de inspección visual, canalizar reportes de mantenimiento y dirigir a los grupos en contingencias.</p>
+                        </div>
+                        <div class="card-3d compromiso-card">
+                            <h4>Padres de Familia y Comités</h4>
+                            <p>Sumarse a los comités de seguridad, asistir a reuniones informativas y colaborar en las faenas de mantenimiento escolar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-evaluacion" class="section-view">
+                <div class="card-3d">
+                    <div class="card-title">Indicadores de Evaluación del Proyecto</div>
+                    <div class="grid-3col">
+                        <div class="card-3d info-card">
+                            <h3>Sectores Evaluados</h3>
+                            <p><strong>6 Zonas clave</strong> diagnosticadas detalladamente en el perímetro escolar.</p>
+                        </div>
+                        <div class="card-3d info-card">
+                            <h3>Meta de Cobertura</h3>
+                            <p><strong>100%</strong> de la comunidad escolar alcanzada mediante material informativo y preventivo.</p>
+                        </div>
+                        <div class="card-3d info-card">
+                            <h3>Comunidad Beneficiada</h3>
+                            <p>Estudiantes, docentes, personal administrativo y padres de familia de la Secundaria Rosario Castellanos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sec-juegos-menu" class="section-view">
+                <div class="card-3d">
+                    <div class="card-title">Centro de Juegos Preventivos</div>
+                    <p class="subtexto">Selecciona una de las actividades interactivas para poner a prueba tus conocimientos sobre la prevención de riesgos escolares.</p>
+                    
+                    <div class="grid-3col">
+                        <div class="card-3d info-card">
+                            <h3>Trivia Institucional</h3>
+                            <p>Responde preguntas basadas en los datos de diagnóstico y protocolos de la plataforma.</p>
+                            <br>
+                            <a href="trivia.html" class="btn-3d zone-btn">Iniciar Trivia</a>
+                        </div>
+                        <div class="card-3d info-card">
+                            <h3>Memorama de Prevención</h3>
+                            <p>Encuentra las parejas que conectan cada área de riesgo con su medida correctiva correspondiente.</p>
+                            <br>
+                            <a href="memorama.html" class="btn-3d zone-btn">Iniciar Memorama</a>
+                        </div>
+                        <div class="card-3d info-card">
+                            <h3>Ruleta de la Seguridad</h3>
+                            <p>Gira la ruleta interactiva para obtener un caso preventivo al azar y responder la duda técnica.</p>
+                            <br>
+                            <a href="ruleta.html" class="btn-3d zone-btn">Girar Ruleta</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            Proyecto Escolar Comunitario (PEC) &bull; Módulo 4 de Programación &bull; Secundaria Rosario Castellanos, Tultitlán
+        </footer>
+    </div>
+
+    <div id="modalSecreto" class="modal-secret-overlay">
+        <div class="modal-secret-card">
+            <h3>Acceso Restringido</h3>
+            <p>Ingrese la clave especial para activar el portal del director:</p>
+            <form id="formClaveSecreta">
+                <input type="password" id="claveSecretaInput" placeholder="Clave especial" required>
+                <button type="submit" class="btn-secret-submit">Verificar</button>
+            </form>
+            <p id="msgErrorClave" class="secret-error-msg"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

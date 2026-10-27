@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosario Castellano Figueroa - Portal de Acceso Seguro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="stylesheet" href="director_login.css">
+</head>
+<body class="w-screen h-screen flex items-center justify-center relative select-none">
+
+    <canvas id="sparkle-canvas"></canvas>
+
+    <main class="relative z-20 w-full max-w-[440px] p-4">
+        <div class="glass-outer p-6 sm:p-7 relative overflow-hidden transform-gpu" data-tilt data-tilt-max="6" data-tilt-speed="500" data-tilt-glare data-tilt-max-glare="0.15">
+            
+            <div class="glow-ring"></div>
+
+            <div class="text-center mb-6 relative z-10">
+                <div class="flex items-center justify-center mb-1">
+                    <span class="logo-n text-5xl font-black tracking-tighter">N</span>
+                </div>
+                <h1 class="text-2xl font-black text-white tracking-[0.25em] font-orbitron uppercase">Rosario Castellano Figueroa</h1>
+                <p class="text-[10px] text-orange-200 font-bold tracking-[0.35em] uppercase opacity-90 mt-1">ACCESO DIRECTOR</p>
+            </div>
+
+            <div class="glass-inner-card p-6 tech-grid-bg relative overflow-hidden">
+                
+                <div class="text-center mb-5">
+                    <span class="text-[10px] font-semibold text-orange-200 tracking-[0.2em] uppercase opacity-90">AUTENTICACIÓN REQUERIDA</span>
+                    <div class="w-12 h-[1px] bg-gradient-to-r from-transparent via-orange-400 to-transparent mx-auto mt-1 opacity-80"></div>
+                </div>
+
+                <form id="directorLoginForm" class="space-y-4 relative z-10">
+                    
+                    <div class="space-y-1">
+                        <div class="gold-border-glow rounded-full px-4 py-2.5 flex items-center transition-all duration-300">
+                            <i class="fa-solid fa-user text-orange-400 text-sm mr-3"></i>
+                            <div class="flex-1 flex flex-col justify-center">
+                                <span class="text-[9px] font-extrabold text-orange-300 tracking-widest uppercase -mb-0.5">NÚMERO DE ACCESO</span>
+                                <input type="text" id="numAcceso" required placeholder="****" class="w-full bg-transparent text-white placeholder-slate-400 text-xs focus:outline-none font-semibold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="gold-border-glow rounded-full px-4 py-2.5 flex items-center transition-all duration-300">
+                            <i class="fa-solid fa-lock text-orange-400 text-sm mr-3"></i>
+                            <div class="flex-1 flex flex-col justify-center">
+                                <span class="text-[9px] font-extrabold text-orange-300 tracking-widest uppercase -mb-0.5">CONTRASEÑA</span>
+                                <input id="password" type="password" required placeholder="••••••••••••" class="w-full bg-transparent text-white placeholder-slate-400 text-xs focus:outline-none font-semibold">
+                            </div>
+                            <button type="button" id="togglePassword" class="text-orange-300 hover:text-white transition-colors focus:outline-none ml-2">
+                                <i id="eyeIcon" class="fa-solid fa-eye text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-[11px] text-orange-100 pt-1 px-1 font-semibold">
+                        <a href="#" class="hover:text-orange-300 transition-colors">BIENVENIDO DIRECTOR.</a>
+                    </div>
+
+                    <div class="pt-3">
+                        <button type="submit" class="btn-access-3d w-full py-3.5 text-center relative overflow-hidden group">
+                            <span class="block text-[9px] font-bold tracking-[0.25em] text-orange-200 uppercase -mb-0.5 opacity-90">INGRESAR</span>
+                            <span class="block text-sm font-extrabold text-white tracking-[0.2em] font-orbitron">ACCEDER AL PORTAL</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast" class="fixed top-6 right-6 z-50 transform translate-x-96 opacity-0 transition-all duration-500 flex items-center gap-3 bg-slate-950/90 border border-orange-500/50 text-orange-400 px-5 py-4 rounded-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] backdrop-blur-md">
+        <i class="fa-solid fa-shield-check text-2xl text-orange-400"></i>
+        <div>
+            <h4 class="font-orbitron text-xs font-bold text-white uppercase tracking-wider">AUTENTICADO</h4>
+            <p class="text-xs text-orange-100 mt-0.5">Acceso concedido al portal Rosario Castellano Figueroa.</p>
+        </div>
+    </div>
+
+    <script src="director_login.script.js"></script>
+</body>
+</html>

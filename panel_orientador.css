@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #120703;
+    color: #ffffff;
+}
+
+.panel-header {
+    background: #3a080c;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e0561b;
+}
+
+.btn-logout {
+    background: #c81e1e;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.panel-container {
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.panel-section {
+    background: #1a0305;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #3a080c;
+}
+
+.chart-container {
+    max-width: 600px;
+    margin: 1.5rem auto;
+}
+
+.tabla-datos {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.tabla-datos th, .tabla-datos td {
+    border: 1px solid #3a080c;
+    padding: 0.8rem;
+    text-align: left;
+}
+
+.tabla-datos th {
+    background: #3a080c;
+    color: #f97316;
+}

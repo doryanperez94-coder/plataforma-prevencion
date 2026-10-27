@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Prevencion - Secundaria Rosario Castellanos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <header class="header-principal">
+        <div class="brand">
+            <h1>Plataforma de Prevencion</h1>
+            <p>Plataforma Preventiva &bull; Secundaria Rosario Castellanos, Tultitlan</p>
+        </div>
+        <div class="header-right-zone">
+            <a href="estudiante_padre.html" class="btn-header">Realizar Reporte</a>
+            <button class="btn-header" onclick="switchSection('sec-juegos')">Juegos Preventivos</button>
+            <div class="logo-container">
+                <img src="cecytem.png" alt="Logo Institucional" class="logo-header">
+                <button id="btnDirectorTrigger" class="btn-secret-trigger" onclick="abrirModalSecreto()">👤</button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav-bar">
+        <button class="nav-tab active">Inicio y Proposito</button>
+        <button class="nav-tab">Diagnostico Escolar</button>
+        <button class="nav-tab">Medidas y Protocolos</button>
+        <button class="nav-tab">Participacion Comunitaria</button>
+        <button class="nav-tab">Evaluacion del Proyecto</button>
+    </nav>
+
+    <main class="content-container">
+        <h2>Bienvenido a la Plataforma de Prevencion Escolar</h2>
+        <p>Espacio dedicado al monitoreo, atencion y reporte de situaciones de riesgo en la infraestructura escolar.</p>
+    </main>
+
+    <div id="modalSecreto" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Acceso Restringido</h3>
+            <p>Ingrese la clave especial para activar el portal del director:</p>
+            <form id="formClaveSecreta">
+                <input type="password" id="claveSecretaInput" placeholder="Clave especial" required>
+                <button type="submit" class="btn-modal">Verificar</button>
+            </form>
+            <p id="msgErrorClave" class="error-msg"></p>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

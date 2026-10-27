@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Acceso - Entornos seguros para aprender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+
+    <div id="roleModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>¿Quién realiza el reporte?</h2>
+            <p>Selecciona tu perfil en la comunidad escolar para continuar:</p>
+            <div class="role-options">
+                <button type="button" class="role-btn" onclick="selectRole('estudiante')">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <span>Estudiante</span>
+                </button>
+                <button type="button" class="role-btn" onclick="selectRole('padre')">
+                    <i class="fa-solid fa-users-between-lines"></i>
+                    <span>Padre de Familia</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <header class="top-bar">
+        <div class="brand">
+            <i class="fa-solid fa-graduation-cap brand-icon"></i>
+            <span class="brand-title">Rosario Castellano Figueroa</span>
+            <span class="divider">|</span>
+            <span class="brand-subtitle">Entornos seguros para aprender</span>
+        </div>
+        <nav class="nav-menu">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Inicio</a>
+            <a href="#" class="nav-item active"><i class="fa-solid fa-shield-halved"></i> Reportes</a>
+        </nav>
+    </header>
+
+    <main class="main-container">
+        
+        <div class="left-section">
+            <div class="quote-container">
+                <p class="quote-text">“Pequeños hábitos, grandes aprendizajes”</p>
+                <div class="quote-underline"></div>
+            </div>
+
+            <div class="portal-badge">
+                <div class="badge-icon">
+                    <i class="fa-solid fa-graduation-cap cap-icon"></i>
+                    <i class="fa-solid fa-book-open book-icon"></i>
+                </div>
+                <h2 class="badge-sub">Portal de</h2>
+                <h1 class="badge-title" id="badgeRoleTitle">Alumnos</h1>
+                <div class="badge-line"></div>
+                <p class="badge-footer">Tu acceso al conocimiento</p>
+            </div>
+
+            <div class="bottom-features">
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <span>Seguro</span>
+                </div>
+                <div class="feature-divider"></div>
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <span>Confiable</span>
+                </div>
+                <div class="feature-divider"></div>
+                <div class="feature-box">
+                    <div class="feature-icon"><i class="fa-solid fa-user-group"></i></div>
+                    <span>Para ti</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="wave-shape"></div>
+
+        <div class="right-section">
+            
+            <div id="loginCard" class="login-card">
+                <div class="card-header">
+                    <span class="sunburst left-burst"></span>
+                    <h2>Inicia sesión</h2>
+                    <span class="sunburst right-burst"></span>
+                    <p class="card-subtitle">Ingresa con tu matrícula y contraseña<br>para acceder a tu cuenta.</p>
+                    <div class="header-underline"></div>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Nombre Usuario</label>
+                        <div class="input-container">
+                            <div class="input-icon-box"><i class="fa-regular fa-user"></i></div>
+                            <input type="text" id="userInput" placeholder="Ingresa tu usuario" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de control</label>
+                        <div class="input-container">
+                            <div class="input-icon-box"><i class="fa-solid fa-lock"></i></div>
+                            <input type="password" id="password" placeholder="Ingresa tu Número de control" required>
+                            <i class="fa-regular fa-eye toggle-password" id="togglePassword"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="custom-checkbox">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"><i class="fa-solid fa-check"></i></span>
+                            Recordarme
+                        </label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>Iniciar sesión</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div class="divider-text">
+                        <span>¿No tienes una cuenta?</span>
+                        <span>Contáctate con tu orientador</span>
+                    </div>
+
+                    <div class="footer-quote">
+                        <span class="leaf-icon left-leaf">🍂</span>
+                        Juntos por un mejor aprendizaje
+                        <span class="leaf-icon right-leaf">🍂</span>
+                    </div>
+                </form>
+            </div>
+
+            <div id="reportCard" class="login-card" style="display: none;">
+                <div class="card-header">
+                    <span class="sunburst left-burst"></span>
+                    <h2>Registro de Reporte</h2>
+                    <span class="sunburst right-burst"></span>
+                    <p class="card-subtitle">Ingresa la información detallada<br>para registrar el riesgo en la plataforma.</p>
+                    <div class="header-underline"></div>
+                </div>
+
+                <!-- FORMULARIO CONECTADO A TU NUEVO ENDPOINT DE FORMSPREE -->
+                <form id="reportForm" action="https://formspree.io/f/mjyyyzon" method="POST">
+                    
+                    <input type="hidden" name="Folio" id="folioFormspree">
+
+                    <div class="form-group">
+                        <label>Lugar del Riesgo</label>
+                        <div class="input-container">
+                            <div class="input-icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                            <input type="text" id="lugar" name="Lugar del Riesgo" placeholder="Ej. Escaleras principales" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hora / Momento</label>
+                        <div class="input-container">
+                            <div class="input-icon-box"><i class="fa-regular fa-clock"></i></div>
+                            <input type="time" id="hora" name="Hora" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Día / Fecha</label>
+                        <div class="input-container">
+                            <div class="input-icon-box"><i class="fa-regular fa-calendar"></i></div>
+                            <input type="date" id="fecha" name="Fecha" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Quien lo realiza</label>
+                        <div class="input-container">
+                            <div class="input-icon-box"><i class="fa-regular fa-user"></i></div>
+                            <input type="text" id="emisor" name="Quien realiza el reporte" placeholder="Ej. Alumno de 2°A / Padre de familia" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoría / Tipo de Riesgo</label>
+                        <div class="input-container">
+                            <div class="input-icon-box"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <select id="tipoRiesgo" name="Tipo de Riesgo" required style="width: 100%; border: none; outline: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 0.95rem;">
+                                <option value="Caídas">Caídas</option>
+                                <option value="Eléctrico">Eléctrico</option>
+                                <option value="Mobiliario">Mobiliario</option>
+                                <option value="Señalización">Señalización</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descripción detallada</label>
+                        <div class="input-container" style="height: auto; padding: 0.5rem 0;">
+                            <div class="input-icon-box"><i class="fa-solid fa-pen"></i></div>
+                            <textarea id="descripcion" name="Descripcion detallada" rows="3" placeholder="Describe la situación..." required style="width: 100%; border: none; outline: none; background: transparent; font-family: 'Nunito', sans-serif; font-size: 0.95rem; resize: none;"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="submit-btn">
+                        <span>Enviar Reporte</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                    <div class="footer-quote">
+                        <span class="leaf-icon left-leaf">🍂</span>
+                        Juntos por un mejor aprendizaje
+                        <span class="leaf-icon right-leaf">🍂</span>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="script2.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const userInput = document.getElementById('userInput');
+                    const emisorInput = document.getElementById('emisor');
+                    
+                    if (userInput && emisorInput) {
+                        emisorInput.value = userInput.value;
+                    }
+                    
+                    document.getElementById('loginCard').style.display = 'none';
+                    document.getElementById('reportCard').style.display = 'block';
+                });
+            }
+
+            const reportForm = document.getElementById('reportForm');
+            if (reportForm) {
+                reportForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+
+                    const submitBtn = document.getElementById('submitBtn') || reportForm.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        const span = submitBtn.querySelector('span');
+                        if (span) span.innerText = 'Enviando...';
+                    }
+
+                    const folio = 'PEC-' + Math.floor(1000 + Math.random() * 9000);
+                    const folioInput = document.getElementById('folioFormspree');
+                    if (folioInput) folioInput.value = folio;
+
+                    const formData = new FormData(reportForm);
+
+                    try {
+                        const response = await fetch(reportForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (response.ok) {
+                            alert('¡Reporte enviado exitosamente a la plataforma! Folio: ' + folio);
+                            reportForm.reset();
+                            document.getElementById('reportCard').style.display = 'none';
+                            document.getElementById('loginCard').style.display = 'block';
+                        } else {
+                            alert('Ocurrió un error al enviar el reporte. Por favor intente nuevamente.');
+                        }
+                    } catch (error) {
+                        alert('Error de conexión al enviar el reporte.');
+                    } finally {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            const span = submitBtn.querySelector('span');
+                            if (span) span.innerText = 'Enviar Reporte';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

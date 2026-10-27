@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta de la Seguridad - PEC</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <img src="cecytem.png" alt="Logo Institucional" class="logo-flotante">
+
+    <header>
+        <div class="header-content">
+            <div class="brand">
+                <h1>Ruleta de la Seguridad</h1>
+                <p>Plataforma Preventiva &bull; Secundaria Rosario Castellanos, Tultitlán</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div class="card-3d">
+            <div class="card-title">Desafío Aleatorio</div>
+            <div style="text-align: center;">
+                <div class="ruleta-wrapper">
+                    <div class="ruleta-indicador"></div>
+                    <div id="ruleta-disco" class="ruleta-wheel">
+                        <div class="ruleta-segment" style="transform: rotate(0deg);">Escaleras</div>
+                        <div class="ruleta-segment" style="transform: rotate(60deg);">Taller</div>
+                        <div class="ruleta-segment" style="transform: rotate(120deg);">Canchas</div>
+                        <div class="ruleta-segment" style="transform: rotate(180deg);">Laboratorio</div>
+                        <div class="ruleta-segment" style="transform: rotate(240deg);">Pasillos</div>
+                        <div class="ruleta-segment" style="transform: rotate(300deg);">Patio</div>
+                    </div>
+                </div>
+                <br><br>
+                <button id="btn-girar-ruleta" class="btn-3d btn-hero" onclick="girarRuleta()">Girar Ruleta</button>
+            </div>
+            <div id="ruleta-resultado" class="diag-box" style="margin-top: 2rem; display: none;"></div>
+            <br>
+            <a href="index.html" class="btn-3d zone-btn" style="width: auto;">Volver a la Página Principal</a>
+        </div>
+    </div>
+
+    <footer>
+        Proyecto Escolar Comunitario (PEC) &bull; Módulo 4 de Programación &bull; Secundaria Rosario Castellanos, Tultitlán
+    </footer>
+
+    <script>
+        let enGiro = false;
+        let rotacionActual = 0;
+
+        const bancoPreguntas = {
+            "Escaleras": [
+                { pregunta: "¿Qué riesgo presenta el área de Escaleras Principales?", opciones: ["Laminado antideslizante desgastado", "Falta de iluminación completa", "Goteras constantes"], correcta: 0 },
+                { pregunta: "¿Cómo se debe transitar por las escaleras escolares?", opciones: ["Corriendo para llegar rápido", "Usando el pasamanos y caminando por la derecha", "Saltando de dos en dos escalones"], correcta: 1 },
+                { pregunta: "¿Qué elemento falta si los escalones resbalan con agua?", opciones: ["Cinta o banda antiderrapante", "Pintura brillante", "Cera protectora"], correcta: 0 },
+                { pregunta: "¿Cuál es la norma de evacuación en escaleras durante un sismo?", opciones: ["Bajar corriendo sin mirar", "No empujar, no correr, no gritar", "Empujar a los de adelante para salir"], correcta: 1 },
+                { pregunta: "¿Qué objeto no debe dejarse nunca en los escalones?", opciones: ["Mochilas o botellas de agua", "Cinta de señalización", "Pasamanos"], correcta: 0 },
+                { pregunta: "¿Qué hacer si el pasamanos de una escalera está flojo?", opciones: ["Usarlo con fuerza", "Reportarlo al módulo de prevención", "Ignorarlo"], correcta: 1 },
+                { pregunta: "¿Cuál es la iluminación adecuada para una escalera de emergencia?", opciones: ["Sin luces", "Lámparas con respaldo de batería", "Velas"], correcta: 1 },
+                { pregunta: "¿Por qué no se debe usar el celular al subir o bajar escaleras?", opciones: ["Distrae la vista y causa caídas", "Gasta batería", "Afecta la señal"], correcta: 0 },
+                { pregunta: "¿Qué tipo de calzado ayuda a prevenir caídas en las escaleras?", opciones: ["Suela lisa", "Suela antideslizante con agarre", "Mocasines resbalosos"], correcta: 1 },
+                { pregunta: "¿Cuál es la función del descanso en las escaleras largas?", opciones: ["Para acumular mochilas", "Punto de pausa y reducción de fatiga", "Área de juegos"], correcta: 1 }
+            ],
+            "Taller": [
+                { pregunta: "¿Qué acción de seguridad se implementa en la Zona de Talleres?", opciones: ["Dejar herramientas en el suelo", "Marcaje de líneas amarillas en piso", "Cerrar el área"], correcta: 1 },
+                { pregunta: "¿Qué equipo de protección personal (EPP) se usa al cortar madera o metal?", opciones: ["Gafas de seguridad o careta", "Audífonos de música", "Guantes de tela suave"], correcta: 0 },
+                { pregunta: "¿Dónde deben guardarse las herramientas punzocortantes?", opciones: ["En mesas de trabajo libres", "En tableros organizados y cerrados", "En el suelo del taller"], correcta: 1 },
+                { pregunta: "¿Qué señalización indica peligro de maquinaria en movimiento?", opciones: ["Color azul", "Color amarillo con negro", "Color verde"], correcta: 1 },
+                { pregunta: "¿Qué se debe hacer si una máquina emite un sonido extraño?", opciones: ["Seguir usándola", "Apagarla e informar al profesor", "Aumentar la velocidad"], correcta: 1 },
+                { pregunta: "¿Qué tipo de extintor debe estar cerca de un taller eléctrico o mecánico?", opciones: ["Extintor tipo CO2 o PQS", "Cubeta con agua", "Extintor de vapor"], correcta: 0 },
+                { pregunta: "¿Por qué no se deben usar prendas sueltas o bufandas en el taller?", opciones: ["Se ensucian rápido", "Pueden ser atrapadas por máquinas rotativas", "Dan mucho calor"], correcta: 1 },
+                { pregunta: "¿Cuál es la norma antes de limpiar una máquina eléctrica?", opciones: ["Lavarla con agua encendida", "Desconectarla de la corriente eléctrica", "Limpiarla mientras funciona"], correcta: 1 },
+                { pregunta: "¿Qué recipiente se usa para trapos impregnados de aceite o grasa?", opciones: ["Contenedor metálico cerrado con tapa", "Bote de basura de papel", "Dejarlos en la ventana"], correcta: 0 },
+                { pregunta: "¿Qué distancia mínima de seguridad debe haber alrededor de una máquina pesada?", opciones: ["1 metro delimitado con pintura de tráfico", "Sin distancia", "10 metros"], correcta: 0 }
+            ],
+            "Canchas": [
+                { pregunta: "¿Cómo se previenen golpes en los postes de la techumbre?", opciones: ["Pintando el poste de verde", "Colocando recubrimientos de espuma", "Quitando los postes"], correcta: 1 },
+                { pregunta: "¿Qué revisión requiere el piso de la cancha de básquetbol/fútbol?", opciones: ["Verificar que no tenga grietas o desniveles peligrosos", "Pintarlo diariamente", "Echarle agua"], correcta: 0 },
+                { pregunta: "¿Qué hacer si la red de la portería o canasta está rota o desprendida?", opciones: ["Avisar para su reparación antes de jugar", "Amarra con rafia floja", "Ignorarlo"], correcta: 0 },
+                { pregunta: "¿Por qué se evita jugar en la cancha mientras está lloviendo?", opciones: ["El suelo húmedo provoca resbalones graves", "Para no mojar el balón", "Porque se borran las líneas"], correcta: 0 },
+                { pregunta: "¿Qué protección deben llevar las lámparas en áreas deportivas?", opciones: ["Protección de rejilla metálica anti-impactos", "Cubiertas de plástico delgado", "Ninguna protección"], correcta: 0 },
+                { pregunta: "¿Cuál es la acción recomendada si un balón queda atrapado en la estructura alta?", opciones: ["Lanzar piedras para bajarlo", "Pedir asistencia con escalera adecuada", "Trepar por las vigas"], correcta: 1 },
+                { pregunta: "¿Qué hábito evita torceduras de tobillo en la cancha?", opciones: ["Jugar con calzado deportivo sujetado", "Jugar descalzo o en chancletas", "Usar agujetas desatadas"], correcta: 0 },
+                { pregunta: "¿Por qué deben estar libres las orillas del terreno de juego?", opciones: ["Para evitar colisiones contra muros u objetos", "Para colocar puestos de comida", "Para guardar mochilas"], correcta: 0 },
+                { pregunta: "¿Cómo debe ser el drenaje de las canchas al aire libre?", opciones: ["Rejillas niveladas al ras del piso", "Zanjas abiertas sin tapa", "Tubos sobre el nivel del suelo"], correcta: 0 },
+                { pregunta: "¿Qué se debe revisar en las gradas o bancas del patio deportivo?", opciones: ["Estructura firme sin astillas ni oxidaciones salientes", "Que sean de color brillante", "Que tengan almohadones"], correcta: 0 }
+            ],
+            "Laboratorio": [
+                { pregunta: "¿Cuál es el riesgo principal identificado en el Laboratorio de Ciencias?", opciones: ["Piso de madera roto", "Contactos eléctricos a baja altura cerca de agua", "Ventanas sin cristal"], correcta: 1 },
+                { pregunta: "¿Qué elemento es indispensable tener visible y accesible en el laboratorio?", opciones: ["Extintor y botiquín de primeros auxilios", "Un reproductor de música", "Comida rápida"], correcta: 0 },
+                { pregunta: "¿Cuál es la regla fundamental sobre sustancias químicas?", opciones: ["Probarlas para ver su sabor", "Etiquetar e identificar todos los frascos", "Mezclarlas al azar"], correcta: 1 },
+                { pregunta: "¿Qué vestimenta es obligatoria al manipular reactivos?", opciones: ["Bata de laboratorio de algodón, zapato cerrado", "Ropa deportiva corta", "Sandalias"], correcta: 0 },
+                { pregunta: "¿Qué hacer en caso de un derrame de sustancia química en la piel?", opciones: ["Lavar con abundante agua en la regadera de emergencia o lavaojos", "Secar con un trapo seco", "Esperar a terminar la clase"], correcta: 0 },
+                { pregunta: "¿Está permitido consumir alimentos o bebidas en el laboratorio?", opciones: ["No, por riesgo de contaminación por químicos", "Sí, si se limpia la mesa", "Solo golosinas"], correcta: 0 },
+                { pregunta: "¿Cómo se transportan los tubos de ensayo de cristal?", opciones: ["En las manos corriendo", "Utilizando gradillas o soportes para tubo", "En las bolsas del pantalón"], correcta: 1 },
+                { pregunta: "¿Qué tipo de ventilación requiere el área de experimentos volátiles?", opciones: ["Campana de extracción de gases", "Ventilador de mesa dirigido a las personas", "Mantener cerrado el cuarto"], correcta: 0 },
+                { pregunta: "¿Cómo deben manipularse los objetos de vidrio calientes?", opciones: ["Con guantes térmicos o pinzas para crisol", "Con la mano descubierta rápidamente", "Con un papel húmedo"], correcta: 0 },
+                { pregunta: "¿Dónde se deben desechar las agujas, vidrios rotos o reactivos peligrosos?", opciones: ["En los contenedores especiales marcados según la norma", "En la papelera común de basura", "En el drenaje del lavabo"], correcta: 0 }
+            ],
+            "Pasillos": [
+                { pregunta: "¿Cómo mantener libres los pasillos del Edificio A?", opciones: ["Delimitar zonas para mochilas", "Prohibir el paso de alumnos", "Eliminar las bancas"], correcta: 0 },
+                { pregunta: "¿Qué peligro representan los cables tirados a lo largo de un pasillo?", opciones: ["Riesgo de tropiezo e interrupción de la vía", "Ningún peligro", "Sirven de adorno"], correcta: 0 },
+                { pregunta: "¿Qué dirección se sugiere tomar en pasillos concurridos?", opciones: ["Transitar por la derecha en orden", "Caminar en zigzag", "Ir en sentido contrario al flujo"], correcta: 0 },
+                { pregunta: "¿Qué iluminación debe permanecer activa en pasillos interiores?", opciones: ["Luces fijas y lámparas de emergencia", "Luces de discoteca", "Sin iluminación"], correcta: 0 },
+                { pregunta: "¿Por qué no deben abrirse las puertas del aula bruscamente hacia el pasillo?", opciones: ["Pueden golpear a alguien que va transitando", "Para no hacer ruido", "Se rompen las chapas"], correcta: 0 },
+                { pregunta: "¿Cómo deben colocarse las carpetas de basura en pasillos?", opciones: ["Pegadas a los muros sin obstruir la circulación", "A la mitad del paso", "Enfrente de las puertas"], correcta: 0 },
+                { pregunta: "¿Qué extintor debe ubicarse en los pasillos principales?", opciones: ["Extintor PQS señalado a 1.5 metros de altura", "Extintor guardado en bodega", "Extintor de juguete"], correcta: 0 },
+                { pregunta: "¿Qué señal de evacuación debe colocarse en las esquinas de los pasillos?", opciones: ["Flecha verde con ruta de evacuación", "Anuncio publicitario", "Señal de silencio"], correcta: 0 },
+                { pregunta: "¿Qué hacer si un vitral o ventana del pasillo está fisurado?", opciones: ["Colocar cinta de aislamiento y reportar inmediatamente", "Tocar el vidrio", "Ignorarlo"], correcta: 0 },
+                { pregunta: "¿Qué altura mínima debe haber libre de objetos colgantes en pasillos?", opciones: ["2.10 metros para evitar golpes en la cabeza", "1.50 metros", "Cualquier altura"], correcta: 0 }
+            ],
+            "Patio": [
+                { pregunta: "¿Qué solución requiere el desnivel en el Patio Central?", opciones: ["Colocar una rampa de madera", "Nivelación con mezcla epóxica o rampa reglamentaria", "Cercar el área"], correcta: 1 },
+                { pregunta: "¿Qué punto del patio debe identificarse como el más seguro ante un sismo?", opciones: ["Zona de menor riesgo o Punto de Reunión", "Debajo de las cornisas", "Junto a los árboles secos"], correcta: 0 },
+                { pregunta: "¿Qué cuidado requieren las coladeras del patio central?", opciones: ["Tapas metálicas firmes y sin aberturas grandes", "Dejarlas destapadas para que fluya el agua", "Cubrir con cartón"], correcta: 0 },
+                { pregunta: "¿Qué medida se aplica a los árboles frondosos en el patio?", opciones: ["Poda preventiva de ramas secas o con riesgo de caída", "Cortarlos todos", "Pintar las hojas"], correcta: 0 },
+                { pregunta: "¿Qué señalización se requiere si hay obras o reparaciones en el patio?", opciones: ["Cinta precautoria color amarillo/rojo", "Ninguna señal", "Una bandera blanca"], correcta: 0 },
+                { pregunta: "¿Por qué se evita el uso de cerámicas lisas en patios al aire libre?", opciones: ["Se vuelven extremadamente resbalosas con la lluvia", "Son costosas", "Son frías"], correcta: 0 },
+                { pregunta: "¿Qué debe instalarse en las zonas expuestas al sol intenso?", opciones: ["Velarias o mallas sombra para evitar golpes de calor", "Sombrillas de plástico", "Calentadores"], correcta: 0 },
+                { pregunta: "¿Cómo evitar inundaciones en el patio durante tormentas?", opciones: ["Limpieza periódica de rejillas y desazolve de drenajes", "Poner sacos de tierra adentro de los salones", "Esperar a que se evapore"], correcta: 0 },
+                { pregunta: "¿Qué hacer con las banquetas levantadas por raíces en el patio?", opciones: ["Reparar el firme nivelando la superficie", "Saltar sobre ellas", "Pintarlas de rojo"], correcta: 0 },
+                { pregunta: "¿Cuál es la función del timbre o sirena audible en el patio?", opciones: ["Alertar oportunamente a toda la comunidad en caso de emergencia", "Tocar música", "Llamar a junta"], correcta: 0 }
+            ]
+        };
+
+        const nombresSectores = ["Escaleras", "Taller", "Canchas", "Laboratorio", "Pasillos", "Patio"];
+
+        function girarRuleta() {
+            if (enGiro) return;
+            enGiro = true;
+
+            const disco = document.getElementById('ruleta-disco');
+            const res = document.getElementById('ruleta-resultado');
+            res.style.display = 'none';
+
+            const giroAdicional = Math.floor(Math.random() * 360) + 1440;
+            rotacionActual += giroAdicional;
+            disco.style.transform = `rotate(${rotacionActual}deg)`;
+
+            setTimeout(() => {
+                enGiro = false;
+
+                const gradosNormalizados = (360 - (rotacionActual % 360)) % 360;
+                const indiceSector = Math.floor(gradosNormalizados / 60);
+
+                const nombreSector = nombresSectores[indiceSector];
+                const preguntasDelSector = bancoPreguntas[nombreSector];
+                
+                const preguntaAleatoria = preguntasDelSector[Math.floor(Math.random() * preguntasDelSector.length)];
+                
+                res.style.display = 'block';
+                res.innerHTML = `
+                    <strong style="color: var(--rojo-oscuro); font-size: 1.1rem;">Sector: ${nombreSector}</strong>
+                    <p style="margin: 10px 0; font-weight: 700;">${preguntaAleatoria.pregunta}</p>
+                    <div id="ruleta-opciones" class="grid-2col" style="margin-top: 10px;"></div>
+                `;
+
+                const opContainer = document.getElementById('ruleta-opciones');
+                preguntaAleatoria.opciones.forEach((op, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'btn-3d zone-btn';
+                    btn.innerText = op;
+                    btn.onclick = () => {
+                        if (idx === preguntaAleatoria.correcta) {
+                            alert('¡Respuesta Correcta!');
+                        } else {
+                            alert('Respuesta Incorrecta. Inténtalo de nuevo.');
+                        }
+                    };
+                    opContainer.appendChild(btn);
+                });
+
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Dirección Escolar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="panel_control.css">
+</head>
+<body>
+    <header class="panel-header">
+        <h1>Panel de Control de Dirección</h1>
+        <a href="index.html" class="btn-logout">Cerrar Sesión</a>
+    </header>
+
+    <div class="panel-container">
+        <nav class="panel-nav">
+            <button class="tab-btn active" onclick="mostrarSeccion('sec-reportes', this)">Reportes Realizados</button>
+            <button class="tab-btn" onclick="mostrarSeccion('sec-orientadores', this)">Orientadores Asignados</button>
+        </nav>
+
+        <section id="sec-reportes" class="panel-section active">
+            <h2>Estadísticas y Registro de Reportes</h2>
+            <div class="chart-container">
+                <canvas id="graficaReportesDir"></canvas>
+            </div>
+            <table class="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Lugar</th>
+                        <th>Momento / Hora</th>
+                        <th>Día</th>
+                        <th>Quien lo hizo</th>
+                        <th>Categoría</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReportesBody">
+                </tbody>
+            </table>
+        </section>
+
+        <section id="sec-orientadores" class="panel-section">
+            <h2>Gestión de Orientadores Asignados</h2>
+            <form id="formOrientador" class="form-orientador">
+                <input type="hidden" id="orientadorIndex">
+                <input type="text" id="oriNombre" placeholder="Nombre completo" required>
+                <input type="text" id="oriGrado" placeholder="Grado / Grupo" required>
+                <input type="text" id="oriTurno" placeholder="Turno" required>
+                <button type="submit" id="btnGuardarOri" class="btn-panel">Agregar Orientador</button>
+            </form>
+
+            <table class="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Grado / Grupo</th>
+                        <th>Turno</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaOrientadoresBody">
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        let orientadores = JSON.parse(localStorage.getItem('pec_orientadores')) || [
+            { nombre: 'Genaro Reyes', grado: '5to semestre', turno: 'Vespertino' },
+            { nombre: 'Anel', grado: '3er semestre', turno: 'Vespertino' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            localStorage.setItem('pec_orientadores', JSON.stringify(orientadores));
+            cargarReportes();
+            cargarOrientadores();
+            inicializarGrafica();
+
+            const formOri = document.getElementById('formOrientador');
+            if (formOri) {
+                formOri.addEventListener('submit', guardarOrientador);
+            }
+        });
+
+        function mostrarSeccion(seccionId, btn) {
+            document.querySelectorAll('.panel-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(seccionId).classList.add('active');
+            if (btn) btn.classList.add('active');
+        }
+
+        function cargarReportes() {
+            const tbody = document.getElementById('tablaReportesBody');
+            if (!tbody) return;
+
+            const reportes = JSON.parse(localStorage.getItem('pec_reportes')) || JSON.parse(sessionStorage.getItem('pec_reportes')) || [];
+            tbody.innerHTML = '';
+
+            if (reportes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #a83b0c; padding: 15px;">No hay reportes registrados.</td></tr>`;
+                return;
+            }
+
+            reportes.forEach(r => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${r.folio || ''}</td>
+                        <td>${r.lugar || ''}</td>
+                        <td>${r.momento || ''}</td>
+                        <td>${r.dia || ''}</td>
+                        <td>${r.emisor || ''}</td>
+                        <td>${r.tipo || ''}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function cargarOrientadores() {
+            const tbody = document.getElementById('tablaOrientadoresBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+            orientadores = JSON.parse(localStorage.getItem('pec_orientadores')) || [];
+
+            if (orientadores.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #a83b0c; padding: 15px;">No hay orientadores registrados.</td></tr>`;
+                return;
+            }
+
+            orientadores.forEach((o, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${o.nombre}</td>
+                        <td>${o.grado}</td>
+                        <td>${o.turno}</td>
+                        <td>
+                            <button class="btn-accion btn-editar" onclick="editarOrientador(${index})">Modificar</button>
+                            <button class="btn-accion btn-eliminar" onclick="eliminarOrientador(${index})">Quitar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function guardarOrientador(e) {
+            e.preventDefault();
+            const index = document.getElementById('orientadorIndex').value;
+            const nombre = document.getElementById('oriNombre').value;
+            const grado = document.getElementById('oriGrado').value;
+            const turno = document.getElementById('oriTurno').value;
+
+            if (index === '') {
+                orientadores.push({ nombre, grado, turno });
+            } else {
+                orientadores[index] = { nombre, grado, turno };
+                document.getElementById('orientadorIndex').value = '';
+                document.getElementById('btnGuardarOri').textContent = 'Agregar Orientador';
+            }
+
+            localStorage.setItem('pec_orientadores', JSON.stringify(orientadores));
+            document.getElementById('formOrientador').reset();
+            cargarOrientadores();
+        }
+
+        function editarOrientador(index) {
+            const o = orientadores[index];
+            document.getElementById('orientadorIndex').value = index;
+            document.getElementById('oriNombre').value = o.nombre;
+            document.getElementById('oriGrado').value = o.grado;
+            document.getElementById('oriTurno').value = o.turno;
+            document.getElementById('btnGuardarOri').textContent = 'Guardar Cambios';
+        }
+
+        function eliminarOrientador(index) {
+            orientadores.splice(index, 1);
+            localStorage.setItem('pec_orientadores', JSON.stringify(orientadores));
+            cargarOrientadores();
+        }
+
+        function inicializarGrafica() {
+            const canvas = document.getElementById('graficaReportesDir');
+            if (!canvas || typeof Chart === 'undefined') return;
+
+            const ctx = canvas.getContext('2d');
+            const reportes = JSON.parse(localStorage.getItem('pec_reportes')) || JSON.parse(sessionStorage.getItem('pec_reportes')) || [];
+            const conteo = { 'Caídas': 0, 'Eléctrico': 0, 'Mobiliario': 0, 'Señalización': 0 };
+
+            reportes.forEach(r => {
+                if (conteo[r.tipo] !== undefined) conteo[r.tipo]++;
+            });
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Caídas', 'Eléctrico', 'Mobiliario', 'Señalización'],
+                    datasets: [{
+                        label: 'Reportes por Categoría de Riesgo',
+                        data: [conteo['Caídas'], conteo['Eléctrico'], conteo['Mobiliario'], conteo['Señalización']],
+                        backgroundColor: ['#E0561B', '#C81E1E', '#F97316', '#8B0000']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { labels: { color: '#ffffff' } } },
+                    scales: {
+                        x: { ticks: { color: '#ffffff' } },
+                        y: { ticks: { color: '#ffffff' }, beginAtZero: true }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

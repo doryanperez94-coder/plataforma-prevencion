@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorama de Prevención - PEC</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <img src="cecytem.png" alt="Logo Institucional" class="logo-flotante">
+
+    <header>
+        <div class="header-content">
+            <div class="brand">
+                <h1>Memorama de Áreas y Soluciones</h1>
+                <p>Plataforma Preventiva &bull; Secundaria Rosario Castellanos, Tultitlán</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div class="card-3d">
+            <div class="card-title">Encuentra las Parejas Correctas</div>
+            <p class="subtexto">Haz clic en las cartas para formar pares entre las zonas evaluadas y sus soluciones.</p>
+            <div id="memorama-grid" class="memorama-board"></div>
+            <div id="memorama-mensaje" class="diag-box" style="margin-top: 1.5rem; display: none;"></div>
+            <br>
+            <button class="btn-3d zone-btn" onclick="cargarMemorama()" style="width: auto; margin-right: 10px;">Reiniciar Memorama</button>
+            <a href="index.html" class="btn-3d zone-btn" style="width: auto;">Volver a la Página Principal</a>
+        </div>
+    </div>
+
+    <footer>
+        Proyecto Escolar Comunitario (PEC) &bull; Módulo 4 de Programación &bull; Secundaria Rosario Castellanos, Tultitlán
+    </footer>
+
+    <script>
+const memoramaDatos = [
+    { id: 1, texto: "Escaleras" },
+    { id: 1, texto: "Escaleras" },
+    { id: 2, texto: "Laboratorio" },
+    { id: 2, texto: "Laboratorio" },
+    { id: 3, texto: "Canchas" },
+    { id: 3, texto: "Canchas" },
+    { id: 4, texto: "Talleres" },
+    { id: 4, texto: "Talleres" }
+];
+
+let cartasSeleccionadas = [];
+let aciertosMemorama = 0;
+let bloqueado = false;
+
+function cargarMemorama() {
+    const board = document.getElementById('memorama-grid');
+    const msg = document.getElementById('memorama-mensaje');
+    board.innerHTML = '';
+    msg.style.display = 'none';
+    cartasSeleccionadas = [];
+    aciertosMemorama = 0;
+    bloqueado = false;
+
+    let cartas = [...memoramaDatos].sort(() => Math.random() - 0.5);
+
+    cartas.forEach((card) => {
+        const div = document.createElement('div');
+        div.className = 'memo-card';
+        div.dataset.id = card.id;
+        div.dataset.text = card.texto;
+        div.innerText = 'PEC';
+        div.onclick = () => voltearCarta(div);
+        board.appendChild(div);
+    });
+}
+
+function voltearCarta(card) {
+    if (bloqueado || card === cartasSeleccionadas[0] || card.classList.contains('matched')) return;
+
+    card.classList.add('flipped');
+    card.innerText = card.dataset.text;
+    cartasSeleccionadas.push(card);
+
+    if (cartasSeleccionadas.length === 2) {
+        bloqueado = true;
+        comprobarPareja();
+    }
+}
+
+function comprobarPareja() {
+    const c1 = cartasSeleccionadas[0];
+    const c2 = cartasSeleccionadas[1];
+
+    if (c1.dataset.id === c2.dataset.id) {
+        c1.classList.add('matched');
+        c2.classList.add('matched');
+        cartasSeleccionadas = [];
+        bloqueado = false;
+        aciertosMemorama++;
+
+        if (aciertosMemorama === memoramaDatos.length / 2) {
+            const msg = document.getElementById('memorama-mensaje');
+            msg.style.display = 'block';
+            msg.innerHTML = '<strong style="color: var(--verde-seguro); font-size: 1.1rem;">¡Excelente! Has emparejado todos los sectores con sus soluciones.</strong>';
+        }
+    } else {
+        setTimeout(() => {
+            c1.classList.remove('flipped');
+            c2.classList.remove('flipped');
+            c1.innerText = 'PEC';
+            c2.innerText = 'PEC';
+            cartasSeleccionadas = [];
+            bloqueado = false;
+        }, 1000);
+    }
+}
+
+window.onload = cargarMemorama;
+    </script>
+</body>
+</html>

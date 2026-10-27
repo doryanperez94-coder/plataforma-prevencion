@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia de Seguridad Escolar - PEC</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <img src="cecytem.png" alt="Logo Institucional" class="logo-flotante">
+
+    <header>
+        <div class="header-content">
+            <div class="brand">
+                <h1>Trivia de Seguridad Escolar</h1>
+                <p>Plataforma Preventiva &bull; Secundaria Rosario Castellanos, Tultitlán</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="margin-top: 2rem;">
+        <div class="card-3d">
+            <div class="card-title">Cuestionario Evaluativo</div>
+            <div id="trivia-container">
+                <p id="trivia-pregunta" class="texto-principal" style="font-weight: 700; margin-bottom: 1.5rem;"></p>
+                <div id="trivia-opciones" class="grid-2col"></div>
+                <div id="trivia-resultado" class="diag-box" style="margin-top: 1.5rem; display: none;"></div>
+            </div>
+            
+            <div id="pantalla-final" class="diag-box" style="text-align: center; display: none; padding: 2rem; margin-top: 1rem;">
+                <h2 style="color: var(--rojo-oscuro); font-size: 2rem; margin-bottom: 0.5rem;">¡Evaluación Finalizada!</h2>
+                <p style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem;">
+                    Aciertos obtenidos: <span id="puntuacion-final" style="color: var(--verde-seguro); font-size: 1.8rem;">0</span> / 10
+                </p>
+                <p id="mensaje-evaluacion" style="font-weight: 600; color: #4a0e0e; margin-bottom: 1.5rem;"></p>
+                <button class="btn-3d btn-hero" onclick="cargarTrivia()">Intentar de Nuevo</button>
+            </div>
+
+            <br>
+            <a href="index.html" class="btn-3d zone-btn" style="width: auto;">Volver a la Página Principal</a>
+        </div>
+    </div>
+
+    <footer>
+        Proyecto Escolar Comunitario (PEC) &bull; Módulo 4 de Programación &bull; Secundaria Rosario Castellanos, Tultitlán
+    </footer>
+
+    <script>
+        const triviaPreguntas = [
+            {
+                pregunta: "¿Cuál es el nivel de riesgo identificado en las Escaleras Principales?",
+                opciones: ["Bajo", "Medio", "Alto"],
+                correcta: 2,
+                explicacion: "Las Escaleras Principales tienen riesgo Alto por laminado antideslizante desgastado."
+            },
+            {
+                pregunta: "¿Qué medida correctiva corresponde al Laboratorio de Ciencias?",
+                opciones: [
+                    "Resanado de fisuras en la cancha",
+                    "Reubicación de conexiones eléctricas y protectores herméticos",
+                    "Pintado de líneas amarillas en piso"
+                ],
+                correcta: 1,
+                explicacion: "Se reubican contactos a baja altura y se colocan tapas de protección herméticas."
+            },
+            {
+                pregunta: "¿Cuál es la norma de conducta preventiva en pasillos?",
+                opciones: [
+                    "Desplazamiento ordenado sin correr y uso de pasamanos",
+                    "Dejar mochilas en medio del pasillo",
+                    "Correr en horas de cambio de clase"
+                ],
+                correcta: 0,
+                explicacion: "Transitar con calma y sujetarse del pasamanos evita tropiezos."
+            },
+            {
+                pregunta: "¿Qué acción se requiere en las Canchas Deportivas?",
+                opciones: [
+                    "Instalar un portón nuevo",
+                    "Resanado de grietas y acojinado en postes",
+                    "Cambiar el horario de receso"
+                ],
+                correcta: 1,
+                explicacion: "Se deben resanar las fisuras del piso y colocar protección en los soportes."
+            },
+            {
+                pregunta: "¿Qué medida de seguridad se aplica en la Zona de Talleres?",
+                opciones: [
+                    "Marcaje de líneas amarillas y guardado de equipo",
+                    "Uso libre de maquinaria sin supervisión",
+                    "Retirar la iluminación del área"
+                ],
+                correcta: 0,
+                explicacion: "Las líneas delimitadoras y gabinetes cerrados garantizan la seguridad."
+            },
+            {
+                pregunta: "¿Cuál es la recomendación principal para el Patio Central?",
+                opciones: [
+                    "Nivelación de desnivel con mezcla epóxica o rampa",
+                    "Pintar el piso de color azul",
+                    "Colocar rejas en todo el perímetro"
+                ],
+                correcta: 0,
+                explicacion: "La nivelación corrige el borde peligroso que genera tropiezos en la comunidad."
+            },
+            {
+                pregunta: "¿Qué tipo de extintor debe estar señalizado a 1.5m en los pasillos?",
+                opciones: ["Agua pura", "Polvo Químico Seco (PQS)", "Espuma vegetal"],
+                correcta: 1,
+                explicacion: "El extintor PQS es el estándar adecuado para emergencias escolares generales."
+            },
+            {
+                pregunta: "¿Cómo deben mantenerse las áreas de paso y rutas de evacuación?",
+                opciones: [
+                    "Con bancas para descansar",
+                    "Libres de mochilas, cables u obstáculos",
+                    "Con adornos colgantes bajos"
+                ],
+                correcta: 1,
+                explicacion: "Mantener despejadas las vías garantiza una evacuación rápida e ininterrumpida."
+            },
+            {
+                pregunta: "¿Qué elemento de protección se debe usar al manipular sustancias en laboratorio?",
+                opciones: ["Bata de algodón y calzado cerrado", "Ropa ligera descubierta", "Guantes de tela fina"],
+                correcta: 0,
+                explicacion: "La bata de algodón y el calzado cerrado previenen quemaduras o contacto químico directo."
+            },
+            {
+                pregunta: "¿Qué protocolo se debe seguir durante la alerta de un sismo?",
+                opciones: [
+                    "Bajar las escaleras corriendo inmediatamente",
+                    "No empujar, no correr, no gritar y dirigirse al Punto de Reunión",
+                    "Permanecer junto a los ventanales de cristal"
+                ],
+                correcta: 1,
+                explicacion: "Mantener la calma e ir al Punto de Reunión asegura el bienestar de todos."
+            }
+        ];
+
+        let triviaIndex = 0;
+        let aciertos = 0;
+
+        function cargarTrivia() {
+            triviaIndex = 0;
+            aciertos = 0;
+            document.getElementById('pantalla-final').style.display = 'none';
+            document.getElementById('trivia-container').style.display = 'block';
+            mostrarPreguntaTrivia();
+        }
+
+        function mostrarPreguntaTrivia() {
+            const p = triviaPreguntas[triviaIndex];
+            document.getElementById('trivia-pregunta').innerText = `Pregunta ${triviaIndex + 1} de ${triviaPreguntas.length}: ${p.pregunta}`;
+            const opBox = document.getElementById('trivia-opciones');
+            const resBox = document.getElementById('trivia-resultado');
+            resBox.style.display = 'none';
+            opBox.innerHTML = '';
+
+            p.opciones.forEach((op, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-3d zone-btn';
+                btn.style.textAlign = 'left';
+                btn.innerText = op;
+                btn.onclick = () => evaluarTrivia(i);
+                opBox.appendChild(btn);
+            });
+        }
+
+        function evaluarTrivia(opcionSeleccionada) {
+            const p = triviaPreguntas[triviaIndex];
+            const resBox = document.getElementById('trivia-resultado');
+            resBox.style.display = 'block';
+
+            if (opcionSeleccionada === p.correcta) {
+                aciertos++;
+                resBox.innerHTML = `<strong style="color: var(--verde-seguro); font-size: 1.1rem;">¡Correcto!</strong><br>${p.explicacion}`;
+            } else {
+                resBox.innerHTML = `<strong style="color: var(--rojo-primario); font-size: 1.1rem;">Incorrecto</strong><br>${p.explicacion}`;
+            }
+
+            const botones = document.querySelectorAll('#trivia-opciones button');
+            botones.forEach(b => b.disabled = true);
+
+            setTimeout(() => {
+                triviaIndex++;
+                if (triviaIndex < triviaPreguntas.length) {
+                    mostrarPreguntaTrivia();
+                } else {
+                    mostrarResultadosFinales();
+                }
+            }, 2200);
+        }
+
+        function mostrarResultadosFinales() {
+            document.getElementById('trivia-container').style.display = 'none';
+            const pantallaFinal = document.getElementById('pantalla-final');
+            const puntaje = document.getElementById('puntuacion-final');
+            const mensaje = document.getElementById('mensaje-evaluacion');
+
+            pantallaFinal.style.display = 'block';
+            puntaje.textContent = aciertos;
+
+            if (aciertos === 10) {
+                mensaje.textContent = "¡Excelente! Demuestras un dominio perfecto de los protocolos de prevención y seguridad escolar.";
+            } else if (aciertos >= 7) {
+                mensaje.textContent = "¡Muy bien! Tienes un buen conocimiento sobre las normas de seguridad del plantel.";
+            } else {
+                mensaje.textContent = "Te sugerimos repasar los módulos informativos para mejorar tus hábitos preventivos.";
+            }
+        }
+
+        window.onload = cargarTrivia;
+    </script>
+</body>
+</html>

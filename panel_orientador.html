@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Orientación - Consulta de Reportes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="panel_orientador.css">
+</head>
+<body>
+    <header class="panel-header">
+        <h1>Módulo de Consulta para Orientadores</h1>
+        <a href="index.html" class="btn-logout">Cerrar Sesión</a>
+    </header>
+
+    <div class="panel-container">
+        <section class="panel-section active">
+            <h2>Visualización de Reportes de Riesgo</h2>
+            <div class="chart-container">
+                <canvas id="graficaReportesOri"></canvas>
+            </div>
+            <table class="tabla-datos">
+                <thead>
+                    <tr>
+                        <th>Folio</th>
+                        <th>Lugar</th>
+                        <th>Momento / Hora</th>
+                        <th>Día</th>
+                        <th>Emisor</th>
+                        <th>Tipo de Riesgo</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaReportesOriBody">
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tbody = document.getElementById('tablaReportesOriBody');
+            const canvas = document.getElementById('graficaReportesOri');
+            
+            const reportes = JSON.parse(localStorage.getItem('pec_reportes')) || JSON.parse(sessionStorage.getItem('pec_reportes')) || [];
+
+            if (tbody) {
+                tbody.innerHTML = '';
+                if (reportes.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #a83b0c; padding: 15px;">No hay reportes registrados.</td></tr>`;
+                } else {
+                    reportes.forEach(r => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${r.folio || ''}</td>
+                                <td>${r.lugar || ''}</td>
+                                <td>${r.momento || ''}</td>
+                                <td>${r.dia || ''}</td>
+                                <td>${r.emisor || ''}</td>
+                                <td>${r.tipo || ''}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            if (canvas && typeof Chart !== 'undefined') {
+                const ctx = canvas.getContext('2d');
+                const conteo = {
+                    'Caídas': 0,
+                    'Eléctrico': 0,
+                    'Mobiliario': 0,
+                    'Señalización': 0
+                };
+
+                reportes.forEach(r => {
+                    if (conteo[r.tipo] !== undefined) {
+                        conteo[r.tipo]++;
+                    }
+                });
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Caídas', 'Eléctrico', 'Mobiliario', 'Señalización'],
+                        datasets: [{
+                            label: 'Reportes por Categoría',
+                            data: [conteo['Caídas'], conteo['Eléctrico'], conteo['Mobiliario'], conteo['Señalización']],
+                            backgroundColor: ['#E0561B', '#C81E1E', '#F97316', '#8B0000']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { labels: { color: '#ffffff' } }
+                        },
+                        scales: {
+                            x: { ticks: { color: '#ffffff' } },
+                            y: { ticks: { color: '#ffffff' }, beginAtZero: true }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
